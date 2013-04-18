@@ -1,6 +1,6 @@
 # Tart
 
-TODO: Write a gem description
+A wrapper for tar that provides sensible defaults
 
 ## Installation
 
