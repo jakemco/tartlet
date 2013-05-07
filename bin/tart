@@ -8,18 +8,47 @@ class App
   include Methadone::Main
   include Methadone::CLILogging
 
-  main do # Add args you want: |like,so|
-    # your program code here
-    # You can access CLI options via
-    # the options Hash
+  COMMANDS = %w(compress extract)
+
+  main do |command, *files| # Add args you want: |like,so|
+
+    ##
+    # Begin Execution
+    case command
+
+    ## Compress the list of files into the outfile
+    when "compress"
+      
+      # When compressing, the -o option changed where the tarball goes
+      outfile = options['output'].nil? ? Tart::OUTFILE : options['output']
+
+      Tart::compressSingle(files,!options['tarball'],options['dry'],outfile)
+
+    ## Extract the tarballs into their respective folders
+    when "extract"
+
+      # If we have several files, we need several tar commands (later)
+      if files.length > 1
+        
+        help_now!("One file at a time, bub!")
+
+      else
+        # Simply extract the only file in the current directory
+        target = options['output'].nil? ? Tart::TARGET : options['output']
+
+        Tart::extractSingle(files[0],!options['tarball'],options['dry'],target)
+      end
+    else
+      help_now!("#{command} is not a valid command. Must be one of {#{COMMANDS.join(",")}}")
+    end
+
+
   end
 
   # supplemental methods here
 
   # Declare command-line interface here
 
-  # description "one line description of your app"
-  #
   # Accept flags via:
   # on("--flag VAL","Some flag")
   # options[flag] will contain VAL
@@ -37,7 +66,18 @@ class App
 
   version Tart::VERSION
 
+  description 'Wrapper for tar that provides sensible options'
+
+  on("-o VALUE","--output","Output location if different than current directory");
+  on("-t","--tar","--tarball","Do not gzip the tarball after compressing")
+  on("-d","--dry","--dry-run","Do not execute any commands, simply output the commands that would be used.")
+
+  arg :command, "Command to use (#{COMMANDS.join("|")})"
+
+  arg :files, :many, "list of files to act on"
+
   use_log_level_option
 
   go!
+
 end

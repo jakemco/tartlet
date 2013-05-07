@@ -9,8 +9,19 @@ Before do
   @puts = true
   @original_rubylib = ENV['RUBYLIB']
   ENV['RUBYLIB'] = LIB_DIR + File::PATH_SEPARATOR + ENV['RUBYLIB'].to_s
+
+  @original_cwd = ENV['CWD']
+  ENV['CWD'] = "/tmp/tart"
+  FileUtils.rm_rf "/tmp/tart"
+  FileUtils.mkdir "/tmp/tart"
+  
+  @original_pwd = ENV['PWD']
+  FileUtils.cd "/tmp/tart"
+
 end
 
 After do
+  FileUtils.cd @original_pwd
   ENV['RUBYLIB'] = @original_rubylib
+  ENV['CWD'] = @original_cwd
 end
