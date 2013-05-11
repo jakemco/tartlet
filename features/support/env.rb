@@ -25,3 +25,8 @@ After do
   ENV['RUBYLIB'] = @original_rubylib
   ENV['CWD'] = @original_cwd
 end
+
+
+AfterStep do
+  puts FileUtils.pwd
+end

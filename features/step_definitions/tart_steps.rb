@@ -1,5 +1,6 @@
 # Default list of files
 FILES = %w(foo bar baz)
+TMP = "tmp/aruba"
 
 def resetEnv
 	FileUtils.rm_rf ENV['CWD'], :verbose => true
@@ -28,7 +29,7 @@ def doTarball(tarball,flags = "czf")
 	archive = File.basename(tarball)
 	
 	# Go to the directory and make that tarball
-	FileUtils.chdir tar_dir,:verbose => true do
+	FileUtils.chdir File.join(tar_dir,TMP),:verbose => true do
 
 		# Confirm the file doesn't exist before touching
 		@files.each do |f|
@@ -90,7 +91,7 @@ Then(/^the files should be extracted in the directory "(.*?)"$/) do |dir|
 	Dir.exist?(file_dir).should == true
 	
 	#go to the directory and determine that each file exists
-	Dir.chdir file_dir do
+	Dir.chdir File.join(file_dir,TMP) do
 		@files.each do |file|
 			File.exist?(file).should == true
 		end
@@ -111,7 +112,7 @@ Given(/^a list of files "(.*?)"$/) do |files|
 	@files = files.split(' ')
 	
 	# Go to dat folder
-	Dir.chdir ENV['CWD'] do
+	Dir.chdir File.join(ENV['CWD'],TMP) do
 		
 		# For each file, touch it
 		@files.each do |f|
@@ -142,7 +143,7 @@ def filesInTarball(tarball,flags="xzf")
 	File.exists?(targz).should == true
 	
 	#go to the directory
-	FileUtils.chdir tar_dir, :verbose => true do
+	FileUtils.chdir File.join(tar_dir,TMP), :verbose => true do
 
 		# Create a new folder and move the targz there
 		FileUtils.rm_rf "extract", :verbose => true if Dir.exists?("extract")
