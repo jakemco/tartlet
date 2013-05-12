@@ -46,21 +46,12 @@ gzipped tarball `archive.tar.gz`
 
         $ tartlet compress foo bar baz
 
-    ***TODO***: do a clobbering check before making the tarball to ensure file
-	            safety
-
 * `extract` - takes a single zipped tarball and extracts it into the current
 directory
 
     ex:
 
         $ tartlet extract archive.tar.gz
-
-    ***TODO***: take a list of tarballs and extract them each into their own
-	            folder
-
-    ***TODO***: do a clobbering check before extracting the tarball to ensure
-	            file safety
 
 ### Options
 
