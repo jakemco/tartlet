@@ -43,21 +43,12 @@ gzipped tarball `archive.tar.gz`
 
         $ tartlet compress foo bar baz
 
-    ***TODO***: do a clobbering check before making the tarball to ensure file
-	            safety
-
 * `extract` - takes a single zipped tarball and extracts it into the current
 directory
 
     ex:
 
         $ tartlet extract archive.tar.gz
-
-    ***TODO***: take a list of tarballs and extract them each into their own
-	            folder
-
-    ***TODO***: do a clobbering check before extracting the tarball to ensure
-	            file safety
 
 ### Options
 
@@ -112,3 +103,18 @@ stdout the tar command that would be produced by tartlet
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## TODO Features:
+
+* Clobber Checks:
+
+	* **compress** - Make sure that the target archive doesn't already exist
+	  before creating the file.
+	
+	* **extract** - Make sure that the files in the tarball don't already exist
+	  in the output directory.
+
+* Multiple Extract:
+
+	Allow a list of files to extract, and extract all of them into separate
+	directories
