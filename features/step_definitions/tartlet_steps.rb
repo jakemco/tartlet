@@ -2,23 +2,13 @@
 FILES = %w(foo bar baz)
 TMP = "tmp/aruba"
 
-def resetEnv
-	FileUtils.rm_rf ENV['CWD'], :verbose => true
-	FileUtils.mkdir ENV['CWD'], :verbose => true
-  FileUtils.chdir ENV['CWD'], :verbose => true
-end
-
-def dirReplace(dir)
-	return dir
-end
-
 ##
 # doTarball
 #
 # takes a path to a tarball, and flags for creating said tarball. It will create
 # a tarball at the given location with files foo, bar, and baz inside.
 #
-def doTarball(tarball,flags = "czf")
+def doTarball(tarball,zip = true)
 	
 	# Save the tarball and file list for later use
 	@tarball = tarball
@@ -29,7 +19,7 @@ def doTarball(tarball,flags = "czf")
 	archive = File.basename(tarball)
 	
 	# Go to the directory and make that tarball
-	FileUtils.chdir File.join(tar_dir,TMP),:verbose => true do
+	FileUtils.chdir File.join(TMP,tar_dir),:verbose => true do
 
 		# Confirm the file doesn't exist before touching
 		@files.each do |f|
@@ -39,7 +29,7 @@ def doTarball(tarball,flags = "czf")
 		end
 
 		# Tar up dem files
-		sh "tar -#{flags} #{archive} #{@files.join(' ')}";
+		sh "tar -c#{zip ? 'z' : ''}f #{archive} #{@files.join(' ')}";
 		File.exists?(archive).should == true
 
 		# Remove dem files
@@ -49,6 +39,8 @@ def doTarball(tarball,flags = "czf")
 			File.exists?(f).should == false
 		end
 	end
+  
+  File.exists?(File.join(TMP,tar_dir,archive)).should == true
 end
 
 ##
@@ -57,8 +49,7 @@ end
 # creates zipped tarball x with files foo, bar, and baz
 #
 Given(/^a zipped tarball "(.*?)"$/) do |tarball|
-	resetEnv
-	doTarball(tarball,"czf")
+	doTarball(tarball,true)
 end
 
 ##
@@ -67,8 +58,7 @@ end
 # creates tarball x with files foo, bar, and baz
 #
 Given(/^a tarball "(.*?)"$/) do |tarball|
-	resetEnv
-	doTarball(tarball,"cf")	
+	doTarball(tarball,false)	
 end
 
 ##
@@ -78,20 +68,8 @@ end
 #
 Then(/^the files should be extracted in the directory "(.*?)"$/) do |dir|
 
-	#get the directory path
-	file_dir = File.dirname(dir)
-	
-	#replace shit
-	file_dir = dirReplace(file_dir)
-
-	#put the ending back on if needed
-	file_dir = File.join(file_dir, File.basename(dir))
-	
-	#check that it's a directory
-	Dir.exist?(file_dir).should == true
-	
 	#go to the directory and determine that each file exists
-	Dir.chdir File.join(file_dir,TMP) do
+	Dir.chdir File.join(TMP,dir) do
 		@files.each do |file|
 			File.exist?(file).should == true
 		end
@@ -105,14 +83,11 @@ end
 #
 Given(/^a list of files "(.*?)"$/) do |files|
 	
-	# Clear dat env
-	resetEnv
-
 	# Save dem files
 	@files = files.split(' ')
 	
 	# Go to dat folder
-	Dir.chdir File.join(ENV['CWD'],TMP) do
+	Dir.chdir TMP do
 		
 		# For each file, touch it
 		@files.each do |f|
@@ -128,49 +103,26 @@ end
 #
 # Determines that a tarball has @files in it when extracted with given flags.
 #
-def filesInTarball(tarball,flags="xzf")
+def filesInTarball(tarball,zip=true)
+
 	#get the directory and the filename
 	tar_dir = File.dirname(tarball)
 	archive = File.basename(tarball)
-	
-	#replace current directory
-	tar_dir = dirReplace(tar_dir)
 	
 	#rejoin for the real path
 	targz = File.join(tar_dir,archive)
 	
 	#dat targz should exist
-	File.exists?(targz).should == true
+	File.exists?(File.join(TMP,targz)).should == true
 	
 	#go to the directory
-	FileUtils.chdir File.join(tar_dir,TMP), :verbose => true do
+	FileUtils.chdir File.join(TMP,tar_dir), :verbose => true do
 
-		# Create a new folder and move the targz there
-		FileUtils.rm_rf "extract", :verbose => true if Dir.exists?("extract")
-		FileUtils.mkdir "extract", :verbose => true
-		
-		# Copy the targz into the new folder
-		FileUtils.cp archive, File.join("extract",archive), :verbose => true
-
-		# move to the new directory and extract
-		FileUtils.chdir "extract", :verbose => true do
-
-			# Confirm the files don't exist
-			@files.each do |f|
-				File.exists?(f).should == false
-			end
-
-			# Extract the files
-			sh "tar -#{flags} #{archive}"
-
-			# Confirm the files DO exist
-			@files.each do |f|
-				File.exists?(f).should == true
-			end
-		end
-
-		FileUtils.rm_rf "extract", :verbose => true
-		Dir.exists?("extract").should == false
+    # Extract the files
+    files = `tar -t#{zip ? 'z' : ''}f #{archive}`.split("\n");
+    
+    (files.sort == @files.sort).should == true
+    
 	end
 	
 end
@@ -181,7 +133,7 @@ end
 # Determines that the zipped tarball contains @files
 #
 Then(/^the files should be compressed into a zipped tarball at "(.*?)"$/) do |tarball|
-	filesInTarball(tarball,"xzf")	
+	filesInTarball(tarball,true)	
 end
 
 ##
@@ -190,5 +142,5 @@ end
 # Determines that the tarball contains @files
 #
 Then(/^the files should be compressed into a tarball at "(.*?)"$/) do |tarball|
-	filesInTarball(tarball,"xf")
+	filesInTarball(tarball,false)
 end

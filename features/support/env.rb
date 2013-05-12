@@ -9,24 +9,14 @@ Before do
   @puts = true
   @original_rubylib = ENV['RUBYLIB']
   ENV['RUBYLIB'] = LIB_DIR + File::PATH_SEPARATOR + ENV['RUBYLIB'].to_s
-
-  @original_cwd = ENV['CWD']
-  ENV['CWD'] = "/tmp/tartlet"
-  FileUtils.rm_rf "/tmp/tartlet"
-  FileUtils.mkdir "/tmp/tartlet"
   
-  @original_pwd = ENV['PWD']
-  FileUtils.cd "/tmp/tartlet"
+  @base_dir = FileUtils.pwd
 
+  FileUtils.rm_rf "tmp/aruba", :verbose => true
+  FileUtils.mkdir_p "tmp/aruba", :verbose => true
 end
 
 After do
-  FileUtils.cd @original_pwd
   ENV['RUBYLIB'] = @original_rubylib
-  ENV['CWD'] = @original_cwd
-end
-
-
-AfterStep do
-  puts FileUtils.pwd
+  FileUtils.chdir @base_dir, :verbose => true
 end
