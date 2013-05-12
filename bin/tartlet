@@ -2,7 +2,7 @@
 
 require 'optparse'
 require 'methadone'
-require 'tart.rb'
+require 'tartlet.rb'
 
 class App
   include Methadone::Main
@@ -20,9 +20,9 @@ class App
     when "compress"
       
       # When compressing, the -o option changed where the tarball goes
-      outfile = options['output'].nil? ? Tart::OUTFILE : options['output']
+      outfile = options['output'].nil? ? Tartlet::OUTFILE : options['output']
 
-      Tart::compressSingle(files,!options['tarball'],options['dry'],outfile)
+      Tartlet::compressSingle(files,!options['tarball'],options['dry'],outfile)
 
     ## Extract the tarballs into their respective folders
     when "extract"
@@ -34,9 +34,9 @@ class App
 
       else
         # Simply extract the only file in the current directory
-        target = options['output'].nil? ? Tart::TARGET : options['output']
+        target = options['output'].nil? ? Tartlet::TARGET : options['output']
 
-        Tart::extractSingle(files[0],!options['tarball'],options['dry'],target)
+        Tartlet::extractSingle(files[0],!options['tarball'],options['dry'],target)
       end
     else
       help_now!("#{command} is not a valid command. Must be one of {#{COMMANDS.join(",")}}")
@@ -64,7 +64,7 @@ class App
   # # Make an argument optional
   # arg :optional_arg, :optional
 
-  version Tart::VERSION
+  version Tartlet::VERSION
 
   description 'Wrapper for tar that provides sensible options'
 

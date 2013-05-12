@@ -4,7 +4,7 @@ Feature: Sane Use of tar
   So I don't have to remember tar flags
 
   Scenario: Basic UI
-    When I get help for "tart"
+    When I get help for "tartlet"
     Then the exit status should be 0
     And the banner should be present
     And there should be a one line summary of what the app does
@@ -20,20 +20,20 @@ Feature: Sane Use of tar
 
   Scenario: Extract Zipped Tarball
     Given a zipped tarball "archive.tar.gz"
-    When I successfully run `tart extract archive.tar.gz`
+    When I successfully run `tartlet extract archive.tar.gz`
     Then the files should be extracted in the directory "."
 
   Scenario: Extract Tarball
     Given a tarball "archive.tar"
-    When I successfully run `tart --tar extract archive.tar`
+    When I successfully run `tartlet --tar extract archive.tar`
     Then the files should be extracted in the directory "."
 
   Scenario: Compress Zipped Tarball
     Given a list of files "foo bar baz"
-    When I successfully run `tart compress foo bar baz`
+    When I successfully run `tartlet compress foo bar baz`
     Then the files should be compressed into a zipped tarball at "archive.tar.gz"
 
   Scenario: Compress Tarball
     Given a list of files "foo bar baz"
-    When I successfully run `tart --tar compress foo bar baz`
+    When I successfully run `tartlet --tar compress foo bar baz`
     Then the files should be compressed into a tarball at "archive.tar"

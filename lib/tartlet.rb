@@ -1,6 +1,6 @@
-require "tart/version"
+require "tartlet/version"
 
-module Tart
+module Tartlet
   
   include Methadone::CLILogging
   include Methadone::SH
@@ -8,7 +8,7 @@ module Tart
   OUTFILE = "archive"
   TARGET = "."
 
-  def Tart.extractSingle(file, zip = true, dry = false, target = ".")
+  def Tartlet.extractSingle(file, zip = true, dry = false, target = ".")
 
     # Generate the command
     command = "tar -x#{zip ? 'z' : ''}f #{file}"
@@ -22,7 +22,7 @@ module Tart
   end
 
 
-  def Tart.compressSingle(files, zip = true, dry = false, target = OUTFILE)
+  def Tartlet.compressSingle(files, zip = true, dry = false, target = OUTFILE)
     
     # Add the .tar if it's not there
     target += ".tar" if target[/(\.tar)(\.gz)?\z/].nil?

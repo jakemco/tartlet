@@ -1,18 +1,11 @@
-# Tart
+# Tartlet
 
 A wrapper for tar that provides sensible defaults
 
 ## Installation
 
-Add this line to your application's Gemfile:
 
-    gem 'tart'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
+Install via gem as:
 
     $ gem install tart
 

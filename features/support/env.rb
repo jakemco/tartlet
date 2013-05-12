@@ -11,12 +11,12 @@ Before do
   ENV['RUBYLIB'] = LIB_DIR + File::PATH_SEPARATOR + ENV['RUBYLIB'].to_s
 
   @original_cwd = ENV['CWD']
-  ENV['CWD'] = "/tmp/tart"
-  FileUtils.rm_rf "/tmp/tart"
-  FileUtils.mkdir "/tmp/tart"
+  ENV['CWD'] = "/tmp/tartlet"
+  FileUtils.rm_rf "/tmp/tartlet"
+  FileUtils.mkdir "/tmp/tartlet"
   
   @original_pwd = ENV['PWD']
-  FileUtils.cd "/tmp/tart"
+  FileUtils.cd "/tmp/tartlet"
 
 end
 
