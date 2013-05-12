@@ -3,76 +3,154 @@
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <meta name="viewport" content="width=640" />
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
 
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
     <title>Tartlet by jakemask</title>
   </head>
 
   <body>
-    <header>
-      <div class="inner">
-        <h1>Tartlet</h1>
-        <h2>Wrapper to tar that provides sensible options</h2>
-        <a href="https://github.com/jakemask/tartlet" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
+    <a id="forkme_banner" href="https://github.com/jakemask/tartlet">View on GitHub</a>
+    <div class="shell">
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h3>Welcome to GitHub Pages.</h3>
+      <header>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>Tartlet</h1>
+            <h2>Taking the headache out of tar</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+      </header>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/jakemask/tartlet/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/jakemask/tartlet/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
+      </section>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
+        <h3>What is it?</h3>
+
+<p>Tar horror stories. Everyone has one. You used the wrong flags and accidentally overwrote one of your source files without a backup. Or you extracted a tarball over your current directory and deleted half the updates to your project. You spent 30 minutes scouring Google for the right set of flags to extract a zipped tarball instead of an unzipped one. Why are there so many flags!?!</p>
+
+<p>Enter Tartlet. Tartlet is a small commandline wrapper around tar that handles the obnoxious flags for you. Need to extract an archive?</p>
+
+<pre><code>tartlet extract thinmints.tar.gz
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>Mmmmmmm. Delicious extracted cookies. Need to compress a set of files?</p>
 
-<h3>Designer Templates</h3>
+<pre><code>tartlet compress butter sugar flour --output cookie
+</code></pre>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>Mmmmmmmmm. Chocolaty compressed cookies. Tartlet makes it easy to make archives (and apparently I'm craving cookies- please hold).</p>
 
-<h3>Rather Drive Stick?</h3>
+<h3>How to Use it</h3>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>Tartlet takes a command and then a list of files, with optional flags thrown anywhere.</p>
 
-<h3>Authors and Contributors</h3>
+<h4>Commands</h4>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<ul>
+<li>
+<p><code>compress</code> - takes a list of files, and by default compresses them into gzipped tarball <code>archive.tar.gz</code></p>
 
-<h3>Support or Contact</h3>
+<p>ex:</p>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-        </section>
+<pre><code>$ tartlet compress foo bar baz
+</code></pre>
 
-        <aside id="sidebar">
-          <a href="https://github.com/jakemask/tartlet/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/jakemask/tartlet/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
+<p><strong><em>TODO</em></strong>: do a clobbering check before making the tarball to ensure file safety</p>
+</li>
+<li>
+<p><code>extract</code> - takes a single zipped tarball and extracts it into the current directory</p>
 
-          <p class="repo-owner"><a href="https://github.com/jakemask/tartlet"></a> is maintained by <a href="https://github.com/jakemask">jakemask</a>.</p>
+<p>ex:</p>
 
-          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
+<pre><code>$ tartlet extract archive.tar.gz
+</code></pre>
+
+<p><strong><em>TODO</em></strong>: take a list of tarballs and extract them each into their own folder</p>
+
+<p><strong><em>TODO</em></strong>: do a clobbering check before extracting the tarball to ensure file safety</p>
+</li>
+</ul><h4>Options</h4>
+
+<p>Options can be placed anywhere in the command, eg. <code>tartlet -d compress -o target file1 file2</code> is the same as <code>tartlet compress file1 file2 -d -o target</code> which is the same as <code>tartlet compress -d file1 -o target file2</code>. I prefer to put -d before the command, -t after the command but before the files, and -o at the very end, but put them in whatever order makes sense to you.</p>
+
+<ul>
+<li>
+<p><code>-o VALUE</code>, <code>--output VALUE</code> - instead of using the default output (archive.tar.gz or the current directory), direct output to <strong>VALUE</strong>. For compression archive name, tartlet will automatically append the proper file suffix (.tar or .tar.gz) if it is not already provided.</p>
+
+<p>ex:</p>
+
+<pre><code># extract contents of archive into folder 'dirname'
+$ tartlet extract archive.tar.gz -o dirname
+
+# compress list of files into tarball 'files.tar.gz'
+$ tartlet compress foo bar baz -o files.tar.gz
+-- or --
+$ tartlet compress foo bar baz -o files
+</code></pre>
+</li>
+<li>
+<p><code>--tarball</code>, <code>-tar</code>, or <code>-t</code> - treat tarball as not-gzipped, e.g. <code>archive.tar</code> (vs the default assumption of a gzipped tarball, eg <code>archive.tar.gz</code></p>
+
+<p>ex:</p>
+
+<pre><code># extract contents of archive into current directory
+$ tartlet extract --tarball archive.tar
+
+# compress files into non-zipped tarball
+$ tartlet compress --tarball foo bar baz
+</code></pre>
+</li>
+<li>
+<p><code>--dry-run</code>, <code>--dry</code>, <code>-d</code> - don't execute any commands, simply print to stdout the tar command that would be produced by tartlet</p>
+
+<p>ex:</p>
+
+<pre><code>$ tartlet --dry compress foo bar baz --tarball -o files
+tar -cf files.tar foo bar baz
+
+$ tartlet extract --dry-run lotsoffiles.tar.gz -o safefolder
+tar -xzf lotsoffiles.tar.gz -C safefolder
+</code></pre>
+</li>
+</ul>
+      </section>
+
+      <footer>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/jakemask">jakemask</a> can be found on <a href="https://github.com/jakemask/tartlet">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
+      </footer>
+
     </div>
 
-  
+    
   </body>
 </html>
