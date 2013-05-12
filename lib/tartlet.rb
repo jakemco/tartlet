@@ -2,13 +2,10 @@ require "tartlet/version"
 
 module Tartlet
   
-  include Methadone::CLILogging
-  include Methadone::SH
-
   OUTFILE = "archive"
   TARGET = "."
 
-  def Tartlet.extractSingle(file, zip = true, dry = false, target = ".")
+  def Tartlet.extractSingle(file, zip = true, target = TARGET)
 
     # Generate the command
     command = "tar -x#{zip ? 'z' : ''}f #{file}"
@@ -17,12 +14,12 @@ module Tartlet
     command += " -C #{target}" unless target == "."
 
     # Output or Run
-    if dry then puts command else sh command end
-
+    return command
+    
   end
 
 
-  def Tartlet.compressSingle(files, zip = true, dry = false, target = OUTFILE)
+  def Tartlet.compressSingle(files, zip = true, target = OUTFILE)
     
     # Add the .tar if it's not there
     target += ".tar" if target[/(\.tar)(\.gz)?\z/].nil?
@@ -34,7 +31,7 @@ module Tartlet
     command = "tar -c#{zip ? 'z' : ''}f #{target} #{files.join(' ')}"
     
     # Output or Run
-    if dry then puts command else sh command end
+    return command
   end
 
 end

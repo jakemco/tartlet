@@ -7,6 +7,7 @@ require 'tartlet.rb'
 class App
   include Methadone::Main
   include Methadone::CLILogging
+  include Methadone::SH
 
   COMMANDS = %w(compress extract)
 
@@ -21,8 +22,12 @@ class App
       
       # When compressing, the -o option changed where the tarball goes
       outfile = options['output'].nil? ? Tartlet::OUTFILE : options['output']
+      
+      # Get the tar command
+      cmd = Tartlet::compressSingle(files,!options['tarball'],outfile)
 
-      Tartlet::compressSingle(files,!options['tarball'],options['dry'],outfile)
+      # Either output or run the command
+      if options['dry'] then puts cmd else sh cmd end
 
     ## Extract the tarballs into their respective folders
     when "extract"
@@ -30,13 +35,20 @@ class App
       # If we have several files, we need several tar commands (later)
       if files.length > 1
         
+        # TODO allow for multiple files
         help_now!("One file at a time, bub!")
 
       else
+
         # Simply extract the only file in the current directory
         target = options['output'].nil? ? Tartlet::TARGET : options['output']
 
-        Tartlet::extractSingle(files[0],!options['tarball'],options['dry'],target)
+        # Get the tar command
+        cmd = Tartlet::extractSingle(files[0],!options['tarball'],target)
+
+        # Either output or run the command
+        if options['dry'] then puts cmd else sh cmd end
+
       end
     else
       help_now!("#{command} is not a valid command. Must be one of {#{COMMANDS.join(",")}}")
@@ -76,7 +88,7 @@ class App
 
   arg :files, :many, "list of files to act on"
 
-  use_log_level_option
+  #use_log_level_option
 
   go!
 
