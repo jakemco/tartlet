@@ -27,7 +27,7 @@ Mmmmmmmmm. Chocolaty compressed cookies. Tartlet makes it easy to make archives
 
 Install via gem as:
 
-    $ gem install tart
+    $ gem install tartlet
 
 ## Usage
 
