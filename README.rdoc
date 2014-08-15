@@ -1,6 +1,6 @@
 = tartlet - a wrapper for tar that provides sensible defaults
 
-Author::  Jacob Maskiewicz (jakemaskiewicz@gmail.com)
+Author::  Jacob Maskiewicz (github.com/jakemask)
 Copyright:: Copyright (c) 2013 Jacob Maskiewicz
 
 
