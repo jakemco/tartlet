@@ -118,3 +118,7 @@ stdout the tar command that would be produced by tartlet
 
 	Allow a list of files to extract, and extract all of them into separate
 	directories
+
+* RDoc Comments:
+
+	Comments. Comments everywhere.

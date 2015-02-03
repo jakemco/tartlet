@@ -9,7 +9,7 @@ class App
   include Methadone::CLILogging
   include Methadone::SH
 
-  COMMANDS = %w(compress extract)
+  COMMANDS = %w(compress extract list)
 
   main do |command, *files| # Add args you want: |like,so|
 
@@ -24,10 +24,10 @@ class App
       outfile = options['output'].nil? ? Tartlet::OUTFILE : options['output']
       
       # Get the tar command
-      cmd = Tartlet::compressSingle(files,!options['tarball'],outfile)
+      cmd = Tartlet::compressSingle(files, !options['tarball'], outfile)
 
       # Either output or run the command
-      if options['dry'] then puts cmd else sh cmd end
+        if options['dry'] then puts cmd else sh(cmd) {|o,e| puts o; puts e} end
 
     ## Extract the tarballs into their respective folders
     when "extract"
@@ -44,11 +44,24 @@ class App
         target = options['output'].nil? ? Tartlet::TARGET : options['output']
 
         # Get the tar command
-        cmd = Tartlet::extractSingle(files[0],!options['tarball'],target)
+        cmd = Tartlet::extractSingle(files[0], !options['tarball'], target)
 
         # Either output or run the command
-        if options['dry'] then puts cmd else sh cmd end
+        if options['dry'] then puts cmd else sh(cmd) {|o,e| puts o; puts e} end
 
+      end
+
+    ## List files in tarball
+    when "list"
+
+      if files.length > 1
+        help_now!("One file at a time, bub!")
+      else
+        # Get the tar command
+        cmd = Tartlet::listSingle(files[0], !options['tarball'])
+
+        # Either output or run the command
+        if options['dry'] then puts cmd else sh(cmd) {|o,e| puts o; puts e} end
       end
     else
       help_now!("#{command} is not a valid command. Must be one of {#{COMMANDS.join(",")}}")

@@ -34,4 +34,8 @@ module Tartlet
     return command
   end
 
+  def Tartlet.listSingle(file, zip = true)
+    return "tar -#{zip ? 'z' : ''}tvf #{file}"
+  end
+
 end
