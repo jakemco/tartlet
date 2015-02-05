@@ -27,7 +27,7 @@ class App
       cmd = Tartlet::compressSingle(files, !options['tarball'], outfile)
 
       # Either output or run the command
-        if options['dry'] then puts cmd else sh(cmd) {|o,e| puts o; puts e} end
+        if options['dry'] then puts cmd else sh(cmd) {|o,e| print o; STDERR.print e} end
 
     ## Extract the tarballs into their respective folders
     when "extract"
@@ -47,7 +47,7 @@ class App
         cmd = Tartlet::extractSingle(files[0], !options['tarball'], target)
 
         # Either output or run the command
-        if options['dry'] then puts cmd else sh(cmd) {|o,e| puts o; puts e} end
+        if options['dry'] then puts cmd else sh(cmd) {|o,e| print o; STDERR.print e} end
 
       end
 
@@ -61,12 +61,14 @@ class App
         cmd = Tartlet::listSingle(files[0], !options['tarball'])
 
         # Either output or run the command
-        if options['dry'] then puts cmd else sh(cmd) {|o,e| puts o; puts e} end
+        if options['dry'] then puts cmd else sh(cmd) {|o,e| print o; STDERR.print e} end
       end
     else
       help_now!("#{command} is not a valid command. Must be one of {#{COMMANDS.join(",")}}")
     end
 
+    STDOUT.flush
+    STDERR.flush
 
   end
 
